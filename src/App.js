@@ -1,25 +1,52 @@
-import logo from './logo.svg';
-import './App.css';
+import data from "./data"
+import { useState } from "react"
+const App = () => {
+  const [paragraphs, setParagraphs] = useState([])
+  const [number, setNumber] = useState(0)
 
-function App() {
+  const changeNumber = (event) => {
+    let newNumber = parseInt(event.target.value)
+    if(newNumber<0){
+      setNumber(0)
+    }
+    else if(newNumber > data.length){
+      setNumber(data.length)
+    }
+    else{
+    setNumber(newNumber)
+    }
+  }
+
+  const submitForm = (event) => {
+    event.preventDefault()
+    const newParagraphs = data.slice(0, number)
+    setParagraphs(newParagraphs)
+  }
+   
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="form-section">
+      <h1>Lorem ipsum generator</h1>
+      <form onSubmit={submitForm}>
+        <input 
+        type="number"
+        value={number}
+        onChange={changeNumber}
+        />
+        <br />
+        <input type="submit" value="generate" />
+      </form>
+
+      <article className="lorem-ipsum-box">
+        {
+          paragraphs.map((paragraph, index)=>{
+            return (
+              <p key={index}>{paragraph}</p>
+            )
+          })
+      }
+      </article>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
